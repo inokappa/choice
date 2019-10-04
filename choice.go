@@ -42,7 +42,10 @@ func main() {
 	var word string
 	var words string
 
-	stat, _ := os.Stdin.Stat()
+	stat, err := os.Stdin.Stat()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error: ", err)
+	}
 	if (stat.Mode() & os.ModeCharDevice) == 0 {
 		stdin := bufio.NewScanner(os.Stdin)
 		var slices []string
@@ -57,9 +60,6 @@ func main() {
 		}
 
 		word = Choice(words, sp)
-		if err := stdin.Err(); err != nil {
-			fmt.Fprintln(os.Stderr, "Error: ", err)
-		}
 	}
 	fmt.Printf(word)
 }
