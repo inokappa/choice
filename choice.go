@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	AppVersion = "0.0.1"
+	AppVersion = "0.0.2"
 )
 
 var (
@@ -40,11 +40,22 @@ func main() {
 	}
 
 	var word string
+	var words string
+
 	stat, _ := os.Stdin.Stat()
 	if (stat.Mode() & os.ModeCharDevice) == 0 {
 		stdin := bufio.NewScanner(os.Stdin)
-		stdin.Scan()
-		words := stdin.Text()
+		var slices []string
+		for stdin.Scan() {
+			slices = append(slices, stdin.Text())
+		}
+		if len(slices) == 1 {
+			words = strings.Join(slices, sp)
+		} else {
+			words = strings.Join(slices, ",")
+			sp = ","
+		}
+
 		word = Choice(words, sp)
 		if err := stdin.Err(); err != nil {
 			fmt.Fprintln(os.Stderr, "Error: ", err)

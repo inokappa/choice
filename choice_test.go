@@ -57,3 +57,16 @@ func TestStdoutSpPipeChoice(t *testing.T) {
 		t.Fatal("Failed Test")
 	}
 }
+
+func TestStdoutMultilineChoice(t *testing.T) {
+	cmd := exec.Command("sh", "tests/multiline_choice.sh")
+	stdout := new(bytes.Buffer)
+	cmd.Stdout = stdout
+	output := "foo"
+
+	_ = cmd.Run()
+
+	if !strings.Contains(stdout.String(), output) {
+		t.Fatal("Failed Test")
+	}
+}
